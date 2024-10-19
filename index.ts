@@ -1,21 +1,20 @@
-#!/usr/bin/env bun
 
-
-import * as p from '@clack/prompts';
+import { intro, outro, cancel, group, select, text } from '@clack/prompts';
 import setup from './setup';
 
-import { type Requirements } from './interface';
+import  { type Requirements } from './interface';
 
-p.intro("Welcome to Uday's CLI")
 
-const requirements = await p.group({
+intro("Welcome to Uday's CLI")
 
-  projectName: ({results}) => p.text({
+const requirements = await group({
+
+  projectName: ({results}) => text({
     message: "What is the name of your project? (Leave blank if this path is project file)",
     placeholder: "my-project"
   }),
 
-  useSrc: ({results}) => p.select({
+  useSrc: ({results}) => select({
     message: "Do you want to use src as root dir?",
     options: [
       {value: true, label: "Yes"},
@@ -23,7 +22,7 @@ const requirements = await p.group({
     ]
   }),
 
-  useTs: ({results}) => p.select({
+  useTs: ({results}) => select({
     message: "Do you want to use Typescript?",
     options: [
       {value: true, label: "Yes"},
@@ -31,7 +30,7 @@ const requirements = await p.group({
     ]
   }),
 
-  useAxios: ({results}) => p.select({
+  useAxios: ({results}) => select({
     message: "Do you want to use Axios??",
     options: [
       {value: true, label: "Yes"},
@@ -40,14 +39,11 @@ const requirements = await p.group({
   }),
 },{
   onCancel: ({results}) => {
-    p.cancel("Operation cancelled");
+    cancel("Operation cancelled");
     process.exit(0);
   }
-}) as Requirements
+}) as Requirements;
 
-const s = p.spinner()
-s.start("Setting up your project")
-await setup(requirements)
-s.stop("Project setup complete")
+setup(requirements)
 
-p.outro("Thanks for using this Udasy's CLI")
+outro("Thanks for using this CLI")
