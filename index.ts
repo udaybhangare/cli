@@ -4,6 +4,8 @@
 import * as p from '@clack/prompts';
 import setup from './setup';
 
+import { type Requirements } from './interface';
+
 p.intro("Welcome to Uday's CLI")
 
 const requirements = await p.group({
@@ -41,8 +43,11 @@ const requirements = await p.group({
     p.cancel("Operation cancelled");
     process.exit(0);
   }
-})
+}) as Requirements
 
-setup(requirements)
+const s = p.spinner()
+s.start("Setting up your project")
+await setup(requirements)
+s.stop("Project setup complete")
 
-p.outro("Thanks for using this CLI")
+p.outro("Thanks for using this Udasy's CLI")
